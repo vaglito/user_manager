@@ -2,6 +2,7 @@ from apps.users.domain.entities import User
 from apps.users.domain.repositories import UserRepositoryPort
 from .models import UserModel
 from config.db import SessionLocal
+from contextlib import contextmanager
 
 
 class SQLAlchemyUserRepository(UserRepositoryPort):
@@ -10,11 +11,17 @@ class SQLAlchemyUserRepository(UserRepositoryPort):
     This repository handles persistence logic for User entities using SQLAlchemy.
     """
 
-    def __init__(self):
-        """
-        Initializes a new SQLAlchemy session.
-        """
-        self.session = SessionLocal()
+    @contextmanager
+    def get_session(self):
+        session = SessionLocal()
+        try:
+            yield session
+            session.commit()
+        except:
+            session.rollback()
+            raise
+        finally:
+            session.close()
 
     def create(self, user: User) -> User:
         """
@@ -26,16 +33,17 @@ class SQLAlchemyUserRepository(UserRepositoryPort):
         Returns:
             User: The created user entity, with DB-generated fields.
         """
-        db_user = UserModel(
-            email=user.email,
-            password=user.password,
-            first_name=user.first_name,
-            last_name=user.last_name,
-            phone=user.phone
-        )
-        self.session.add(db_user)
-        self.session.commit()
-        self.session.refresh(db_user)
+        with self.get_session() as session:
+            db_user = UserModel(
+                email=user.email,
+                password=user.password,
+                first_name=user.first_name,
+                last_name=user.last_name,
+                phone=user.phone
+            )
+        session.add(db_user)
+        session.commit()
+        session.refresh(db_user)
         return self._to_entity(db_user)
 
     def get_by_id(self, user_uuid: str) -> User | None:
