@@ -1,6 +1,6 @@
 import threading
 from fastapi import FastAPI
-from interfaces.api.routes import users
+from interfaces.api.routes import auth, users
 from apps.users.infrastructure.models import Base
 from config.db import engine
 from adapters.consumers.user_create_consumer import start_consumer
@@ -16,3 +16,4 @@ async def on_startup():
     print("RabbitMQ consumer started")
 
 app.include_router(users.router)
+app.include_router(auth.router)
