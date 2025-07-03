@@ -12,12 +12,7 @@ class SQLAlchemyAuthRepository(AuthRepositoryPort):
         session.close()
 
         if user:
-            print("👉 Email ingresado:", credentials.email)
-            print("👉 Contraseña ingresada:", credentials.password)
-            print("👉 Contraseña almacenada:", user.password)
-
             password_check = bcrypt.checkpw(credentials.password.encode(), user.password.encode())
-            print("🔐 ¿Contraseña válida?", password_check)
 
             if password_check:
                 return User(
