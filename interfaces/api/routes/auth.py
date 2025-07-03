@@ -1,16 +1,15 @@
 from fastapi import APIRouter, HTTPException
 from apps.auth.domain.entities import AuthCredentials
-from apps.auth.infrastructure.repositories.auth_repository import SQLAlchemyAuthRepository
-from apps.auth.infrastructure.services.jwt_service import JWTService
 from apps.auth.application.commands.login_user import LoginUserUseCase
+from apps.container import container
 
 router = APIRouter(prefix="/auth")
 
 
 @router.post('/login/')
 def login(credentials: AuthCredentials):
-    repo = SQLAlchemyAuthRepository()
-    jwt_service = JWTService()
+    repo = container.auth.auth_repository
+    jwt_service = container.auth.jwt_service
     use_case = LoginUserUseCase(repo, jwt_service)
 
     try:
