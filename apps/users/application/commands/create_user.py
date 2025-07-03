@@ -9,7 +9,7 @@ class CreateUserCommand(BaseModel):
     Command object for creating a user.
     """
     email: EmailStr
-    password: constr = constr(min_length=8, max_length=255)
+    password: constr(min_length=8, max_length=255)
     first_name: str
     last_name: str
     phone: Optional[str] = None
