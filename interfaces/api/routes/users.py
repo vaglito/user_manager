@@ -1,13 +1,12 @@
 from fastapi import APIRouter, HTTPException
-from apps.users.infrastructure.repositories import SQLAlchemyUserRepository
+from apps.container import container
 from apps.users.infrastructure.schemas import UserResponseSchema
 
 router = APIRouter()
 
 @router.get('/users/{user_uuid}', response_model=UserResponseSchema)
 def get_user(user_uuid: str):
-    repo = SQLAlchemyUserRepository()
-    user = repo.get_by_id(user_uuid)
+    user = container.users.get_user_use_case.execute(user_uuid)
 
     if not user:
         raise HTTPException(
