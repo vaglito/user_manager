@@ -119,19 +119,11 @@ channel = await connection.channel()
 await channel.default_exchange.publish(...)
 ```
 
-## 📌 Pendientes
-
-- [ ] Documentación Swagger personalizada
-- [ ] Manejo de eventos de dominio
-- [ ] Observabilidad (logs + metrics)
-- [ ] Pruebas de integración con base de datos real
-
----
 
 ### 👨‍💻 Autor
 
 Desarrollado por **César Enrique González Carvajal**  
-📧 cesar.gonzalez@example.com  
+📧 cesargonzalez390@gmail.com  
 🐍 Apasionado por Python, diseño limpio y software modular
 
 ---
