@@ -33,7 +33,7 @@ class UserModel(Base):
         String(50),
     )
     phone = Column(
-        String(11),
+        String(20),
         nullable=True
     )
     created_at = Column(
