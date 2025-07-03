@@ -10,14 +10,14 @@ class UserBaseSchema(BaseModel):
     email : EmailStr
     first_name: Optional[str] = None
     last_name: Optional[str] = None
-    phone: Optional[constr(max_length=20)] = None # type: ignore
+    phone: Optional[str] = Field(default=None, max_length=20)
 
 
 class UserCreateSchema(UserBaseSchema):
     """
     Schema for user creation.
     """
-    password = constr(min_length=8, max_length=255)
+    password: str = Field(..., min_length=8, max_length=255)
 
 
 class UserUpdateSchema(BaseModel):
@@ -26,7 +26,7 @@ class UserUpdateSchema(BaseModel):
     All fields are optional.
     """
     email: Optional[EmailStr] = None
-    password: Optional[constr(min_length=8, max_length=255)] = None # type: ignore
+    password: Optional[str] = Field(default=None, min_length=8, max_length=255)
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     phone: Optional[constr(max_length=20)] = None # type: ignore
