@@ -34,3 +34,7 @@ class UserRepositoryPort(ABC):
             Optional[User]: The user entity if found, otherwise None.
         """
         pass
+
+    @abstractmethod
+    def get_by_email(self, user_email: str) -> User | None:
+        pass
