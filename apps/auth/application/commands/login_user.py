@@ -3,7 +3,7 @@ from apps.auth.domain.entities import AuthCredentials
 from apps.auth.infrastructure.services.jwt_service import JWTService
 
 
-class LoginUseCase:
+class LoginUserUseCase:
     def __init__(self, repo: AuthRepositoryPort, jwt_service: JWTService):
         self.repo = repo
         self.jwt_service = jwt_service
