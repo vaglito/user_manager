@@ -13,8 +13,8 @@ class JWTService:
             "exp": datetime.now() + timedelta(hours=1),
             "email": user.email,
         }
-        return jwt.encode(payload, SECRET_KEY, algorithm=[ALGORITHM])
+        return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
     
     def decode_token(self, token: str) -> dict:
-        return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
 
