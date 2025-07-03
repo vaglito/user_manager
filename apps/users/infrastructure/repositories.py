@@ -45,7 +45,23 @@ class SQLAlchemyUserRepository(UserRepositoryPort):
         session.commit()
         session.refresh(db_user)
         return self._to_entity(db_user)
+    
+    def get_by_email(self, email: str) -> User | None:
+        """
+        Retrieves a user from the database by email.
 
+        Args:
+            email (str): The email of the user.
+
+        Returns:
+            Optional[User]: The corresponding User entity, or None if not found.
+        """
+        with self.get_session() as session:
+            db_user = session.query(UserModel).filter_by(email=email).first()
+            if db_user:
+                return self._to_entity(db_user)
+        return None
+    
     def get_by_id(self, user_uuid: str) -> User | None:
         """
         Retrieves a user from the database by UUID.
@@ -56,15 +72,8 @@ class SQLAlchemyUserRepository(UserRepositoryPort):
         Returns:
             Optional[User]: The corresponding User entity, or None if not found.
         """
-        db_user = self.session.query(
-            UserModel).filter_by(uuid=user_uuid).first()
-        if db_user:
-            return self._to_entity(db_user)
-        return None
-
-    def get_by_email(self, user_email: str) -> User | None:
         with self.get_session() as session:
-            db_user = session.query(UserModel).filter_by(email=user_email).first()
+            db_user = session.query(UserModel).filter_by(uuid=user_uuid).first()
             if db_user:
                 return self._to_entity(db_user)
         return None
