@@ -62,6 +62,13 @@ class SQLAlchemyUserRepository(UserRepositoryPort):
             return self._to_entity(db_user)
         return None
 
+    def get_by_email(self, user_email: str) -> User | None:
+        with self.get_session() as session:
+            db_user = session.query(UserModel).filter_by(email=user_email).first()
+            if db_user:
+                return self._to_entity(db_user)
+        return None
+
     def _to_entity(self, user_model: UserModel) -> User:
         """
         Maps a SQLAlchemy model instance to a domain User entity.
